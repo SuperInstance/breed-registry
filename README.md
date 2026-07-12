@@ -1,62 +1,48 @@
-# The Breed Registry 🐕🧬
+# The Breed Registry
 
-**Model selection as breeding selection.**
+> Model selection as breeding selection. Maps tasks to recommended base models.
 
-Choosing an LLM shouldn't be harder than choosing a dog. The Breed Registry treats AI models like dog breeds — each with distinct temperament, working aptitude, cost, and fence compatibility — so you can match the right model to the right task using a vocabulary everyone already understands.
+Working Animal Architecture treats AI models as working animal breeds — each with
+distinct temperaments, aptitudes, and working profiles. The Breed Registry assesses
+models across standardized criteria and recommends the right breed for the job.
 
-## Why Breeds?
+## Core Concepts
 
-| Dog Breed | LLM Analog | Why It Fits |
-|---|---|---|
-| Border Collie | GPT-4 | Elite working intelligence, high cost, needs mental stimulation |
-| Labrador | Claude 3 | Reliable, gentle, great with instructions (family-safe) |
-| Husky | LLaMA 3 | Energetic, open-range, runs well in cold (open-source) |
-| Jack Russell | GLM | Small, fast, feisty — punches above its weight |
-| Greyhound | Mistral | Lean, blisteringly fast, built for a single purpose |
-| Golden Retriever | Gemini | Friendly, multimodal, fetches anything you throw |
-| Australian Shepherd | Qwen | Hardworking, versatile, herds complex tasks efficiently |
+| Concept        | Registry Term      |
+|---------------|-------------------|
+| AI Model       | Breed             |
+| Model Family   | Lineage           |
+| Task Type      | Working Class     |
+| Score (0–10)   | Aptitude Score    |
 
-## Quick Start
+## Breeds Assessed
+
+- **GPT-4** — Thoroughbred: premium reasoning, high cost
+- **Claude 3** — Warmblood: balanced reasoning and instruction-following
+- **Llama 3** — Mustang: rugged, open, self-reliant
+- **GLM** — Arabian: compact, efficient, strong in multilingual terrain
+- **Mistral** — Andalusian: agile, refined, European pedigree
+- **Gemini** — Hanoverian: multimodal strength, Google lineage
+- **Qwen** — Shire: massive context, heavy-load carrier
+
+## Usage
 
 ```python
 from breed_registry import select_breed, compare_breeds, assess_aptitude
 
 # Pick the best model for a task
-best = select_breed("summarize a legal contract")
-print(best["model"])  # → claude-3
+result = select_breed("code_generation")
+print(result.recommended)  # "gpt-4"
 
 # Compare two models head-to-head
-versus = compare_breeds("gpt-4", "llama-3")
-print(versus["winner"])  # → depends on the task profile
+comparison = compare_breeds("gpt-4", "claude-3")
+print(comparison.winner)  # depends on task weighting
 
-# Score a specific model on a specific task
-score = assess_aptitude("mistral", "code generation")
-print(score["working_aptitude"])  # → 7.5
+# Assess a specific model for a specific task
+score = assess_aptitude("llama-3", "summarization")
+print(score.overall)  # 7.8
 ```
-
-## Registry Structure
-
-```
-registry/
-├── index.json                # Master index of all breeds
-└── models/
-    ├── gpt-4.json            # Border Collie
-    ├── claude-3.json         # Labrador
-    ├── llama-3.json          # Husky
-    ├── glm.json              # Jack Russell
-    ├── mistral.json          # Greyhound
-    ├── gemini.json           # Golden Retriever
-    └── qwen.json             # Australian Shepherd
-```
-
-Each breed assessment includes:
-
-- **Temperament** — personality traits (precision, caution, creativity, etc.)
-- **Working Aptitude** — scored 1–10 across task categories
-- **Cost & Speed** — $/1K tokens and latency tiers
-- **Recommended For** — best-use scenarios
-- **Fence Compatibility** — how well it stays on-task (guardrails)
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — See [LICENSE](LICENSE).
