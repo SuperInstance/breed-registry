@@ -1,0 +1,50 @@
+{
+  "registry_name": "The Breed Registry",
+  "version": "1.0.0",
+  "description": "Model selection as breeding selection",
+  "updated": "2026-07-12",
+  "breeds": {
+    "gpt-4": {
+      "dog_breed": "Border Collie",
+      "registry_file": "models/gpt-4.json",
+      "tier": "premium",
+      "open_weight": false
+    },
+    "claude-3": {
+      "dog_breed": "Labrador Retriever",
+      "registry_file": "models/claude-3.json",
+      "tier": "premium",
+      "open_weight": false
+    },
+    "llama-3": {
+      "dog_breed": "Siberian Husky",
+      "registry_file": "models/llama-3.json",
+      "tier": "open",
+      "open_weight": true
+    },
+    "glm": {
+      "dog_breed": "Jack Russell Terrier",
+      "registry_file": "models/glm.json",
+      "tier": "efficient",
+      "open_weight": true
+    },
+    "mistral": {
+      "dog_breed": "Greyhound",
+      "registry_file": "models/mistral.json",
+      "tier": "efficient",
+      "open_weight": true
+    },
+    "gemini": {
+      "dog_breed": "Golden Retriever",
+      "registry_file": "models/gemini.json",
+      "tier": "premium",
+      "open_weight": false
+    },
+    "qwen": {
+      "dog_breed": "Australian Shepherd",
+      "registry_file": "models/qwen.json",
+      "tier": "open",
+      "open_weight": true
+    }
+  }
+}
