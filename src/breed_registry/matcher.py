@@ -179,7 +179,7 @@ class BreedMatcher:
             Dict with model name, score, dog_breed, and recommendation.
         """
         if not self.registry:
-            raise RuntimeError("Breed registry is empty — no models loaded.")
+            raise RuntimeError("Breed registry is empty -- no models loaded.")
 
         # Detect cost/speed sensitivity from text if not explicitly set
         text = task_description.lower()
@@ -247,9 +247,9 @@ class BreedMatcher:
         a = self.registry.get(model_a)
         b = self.registry.get(model_b)
         if not a:
-            raise KeyError(f"Model {model_a} not found in registry.")
+            raise KeyError(f"Model '{model_a}' not found in registry.")
         if not b:
-            raise KeyError(f"Model {model_b} not found in registry.")
+            raise KeyError(f"Model '{model_b}' not found in registry.")
 
         apt_a = a.get("working_aptitude", {})
         apt_b = b.get("working_aptitude", {})
@@ -295,4 +295,50 @@ class BreedMatcher:
 
     def assess(self, model: str, task: str) -> dict[str, Any]:
         """
-        Assess a specific models
+        Assess a specific model's aptitude for a specific task.
+
+        Returns detailed scoring with temperament and working aptitude.
+        """
+        data = self.registry.get(model)
+        if not data:
+            raise KeyError(f"Model '{model}' not found in registry.")
+
+        task_profile = _classify_task(task)
+        score = _score_model(data, task_profile)
+        max_possible = sum(task_profile.values()) * 10.0
+
+        return {
+            "model": model,
+            "dog_breed": data.get("dog_breed", "Unknown"),
+            "task": task,
+            "working_aptitude": score,
+            "max_possible": round(max_possible, 2),
+            "aptitude_pct": round(score / max_possible * 100, 1) if max_possible else 0,
+            "task_profile": task_profile,
+            "temperament": data.get("temperament", {}),
+            "cost_tier": data.get("cost", {}).get("tier", "unknown"),
+            "speed_tier": data.get("speed", {}).get("latency_tier", "unknown"),
+            "recommended": score >= 7.0,
+        }
+
+
+# ---------------------------------------------------------------------------
+# Module-level convenience functions (use default registry)
+# ---------------------------------------------------------------------------
+
+_MATCHER = BreedMatcher()
+
+
+def select_breed(task: str, **kwargs: Any) -> dict[str, Any]:
+    """Select the best model breed for a task. See BreedMatcher.select."""
+    return _MATCHER.select(task, **kwargs)
+
+
+def compare_breeds(a: str, b: str) -> dict[str, Any]:
+    """Compare two models head-to-head. See BreedMatcher.compare."""
+    return _MATCHER.compare(a, b)
+
+
+def assess_aptitude(model: str, task: str) -> dict[str, Any]:
+    """Assess a model's aptitude for a task. See BreedMatcher.assess."""
+    return _MATCHER.assess(model, task)
