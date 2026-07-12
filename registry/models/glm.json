@@ -1,0 +1,45 @@
+{
+  "model": "glm",
+  "dog_breed": "Jack Russell Terrier",
+  "tagline": "Small, fast, feisty — punches well above its weight class",
+  "temperament": {
+    "intelligence": 7,
+    "trainability": 7,
+    "creativity": 6,
+    "caution": 6,
+    "energy": 10,
+    "independence": 8
+  },
+  "working_aptitude": {
+    "code_generation": 7.0,
+    "reasoning": 7.0,
+    "creative_writing": 6.5,
+    "summarization": 7.0,
+    "math": 7.5,
+    "multilingual": 8.0,
+    "instruction_following": 7.0,
+    "long_context": 6.5
+  },
+  "cost": {
+    "input_per_1k_tokens": 0.0005,
+    "output_per_1k_tokens": 0.001,
+    "tier": "very cheap"
+  },
+  "speed": {
+    "latency_tier": "very fast",
+    "tokens_per_second": "very fast"
+  },
+  "recommended_for": [
+    "high-volume batch tasks",
+    "real-time chatbots",
+    "multilingual (especially Chinese/English)",
+    "cost-sensitive deployments",
+    "edge and low-latency scenarios"
+  ],
+  "fence_compatibility": {
+    "guardrails": "moderate",
+    "on_task_rate": 0.80,
+    "refusal_sensitive": false,
+    "notes": "Feisty little thing — may nip at vague instructions. Give it clear boundaries."
+  }
+}
