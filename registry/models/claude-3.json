@@ -1,45 +1,38 @@
 {
-  "model": "claude-3",
-  "dog_breed": "Labrador Retriever",
-  "tagline": "The dependable family dog — gentle, reliable, everyone loves it",
+  "name": "claude-3",
+  "lineage": "Anthropic",
+  "classification": "Warmblood",
   "temperament": {
-    "intelligence": 9,
-    "trainability": 10,
-    "creativity": 8,
-    "caution": 8,
-    "energy": 7,
-    "independence": 3
+    "primary": "thoughtful",
+    "secondary": "articulate",
+    "description": "Balanced temperament, excels at nuanced communication and careful instruction following."
   },
   "working_aptitude": {
-    "code_generation": 8.5,
-    "reasoning": 8.5,
-    "creative_writing": 9.0,
-    "summarization": 9.5,
-    "math": 7.5,
-    "multilingual": 7.5,
-    "instruction_following": 10.0,
-    "long_context": 9.0
+    "code_generation": 8,
+    "reasoning": 9,
+    "summarization": 9,
+    "creative_writing": 9,
+    "multilingual": 7,
+    "multimodal": 7,
+    "long_context": 9,
+    "instruction_following": 10,
+    "tool_use": 8,
+    "mathematics": 7
   },
-  "cost": {
-    "input_per_1k_tokens": 0.003,
-    "output_per_1k_tokens": 0.015,
-    "tier": "moderate"
-  },
-  "speed": {
-    "latency_tier": "fast",
-    "tokens_per_second": "fast"
-  },
+  "cost_profile": "premium",
+  "speed_profile": "moderate",
   "recommended_for": [
-    "long document summarization",
-    "nuanced creative writing",
-    "safety-sensitive content",
-    "customer-facing applications",
+    "long document analysis",
+    "creative writing",
+    "careful summarization",
+    "ethical reasoning",
     "instruction-heavy workflows"
   ],
   "fence_compatibility": {
-    "guardrails": "very strong",
-    "on_task_rate": 0.95,
-    "refusal_sensitive": true,
-    "notes": "Best-in-class at staying on task and following rules"
-  }
+    "json_mode": false,
+    "function_calling": true,
+    "structured_output": true,
+    "system_prompt": true
+  },
+  "notes": "Exceptional at instruction following and long-context tasks. Versatile and reliable."
 }
