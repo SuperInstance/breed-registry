@@ -1,44 +1,38 @@
 {
-  "model": "llama-3",
-  "dog_breed": "Siberian Husky",
-  "tagline": "The sled dog — built for endurance, loves to run free",
+  "name": "llama-3",
+  "lineage": "Meta",
+  "classification": "Mustang",
   "temperament": {
-    "intelligence": 8,
-    "trainability": 7,
-    "creativity": 7,
-    "caution": 5,
-    "energy": 9,
-    "independence": 7
+    "primary": "rugged",
+    "secondary": "adaptable",
+    "description": "Self-reliant and hardy. Thrives in open environments with minimal supervision."
   },
   "working_aptitude": {
-    "code_generation": 7.5,
-    "reasoning": 7.5,
-    "creative_writing": 7.0,
-    "summarization": 7.5,
-    "math": 6.5,
-    "multilingual": 7.0,
-    "instruction_following": 7.5,
-    "long_context": 6.0
+    "code_generation": 7,
+    "reasoning": 7,
+    "summarization": 7,
+    "creative_writing": 7,
+    "multilingual": 6,
+    "multimodal": 5,
+    "long_context": 6,
+    "instruction_following": 8,
+    "tool_use": 7,
+    "mathematics": 6
   },
-  "cost": {
-    "input_per_1k_tokens": 0.0,
-    "output_per_1k_tokens": 0.0,
-    "tier": "free (self-hosted)"
-  },
-  "speed": {
-    "latency_tier": "depends on hardware",
-    "tokens_per_second": "depends on hardware"
-  },
+  "cost_profile": "low",
+  "speed_profile": "fast",
   "recommended_for": [
-    "self-hosted deployments",
-    "privacy-sensitive applications",
+    "local deployment",
+    "cost-sensitive inference",
     "fine-tuning experiments",
-    "cost-sensitive at-scale inference"
+    "general-purpose chat",
+    "research workloads"
   ],
   "fence_compatibility": {
-    "guardrails": "moderate",
-    "on_task_rate": 0.82,
-    "refusal_sensitive": false,
-    "notes": "Open-range dog — may wander off-leash without good system prompting"
-  }
+    "json_mode": false,
+    "function_calling": true,
+    "structured_output": false,
+    "system_prompt": true
+  },
+  "notes": "Open-weight breed. Maximum flexibility for self-hosting and customization."
 }
