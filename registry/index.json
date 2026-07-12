@@ -1,50 +1,61 @@
 {
-  "registry_name": "The Breed Registry",
-  "version": "1.0.0",
-  "description": "Model selection as breeding selection",
-  "updated": "2026-07-12",
-  "breeds": {
-    "gpt-4": {
-      "dog_breed": "Border Collie",
-      "registry_file": "models/gpt-4.json",
-      "tier": "premium",
-      "open_weight": false
+  "registry_version": "1.0.0",
+  "last_updated": "2025-07-12",
+  "description": "The Breed Registry — model selection as breeding selection",
+  "working_classes": [
+    "code_generation",
+    "reasoning",
+    "summarization",
+    "creative_writing",
+    "multilingual",
+    "multimodal",
+    "long_context",
+    "instruction_following",
+    "tool_use",
+    "mathematics"
+  ],
+  "breeds": [
+    {
+      "name": "gpt-4",
+      "lineage": "OpenAI",
+      "classification": "Thoroughbred",
+      "path": "registry/models/gpt-4.json"
     },
-    "claude-3": {
-      "dog_breed": "Labrador Retriever",
-      "registry_file": "models/claude-3.json",
-      "tier": "premium",
-      "open_weight": false
+    {
+      "name": "claude-3",
+      "lineage": "Anthropic",
+      "classification": "Warmblood",
+      "path": "registry/models/claude-3.json"
     },
-    "llama-3": {
-      "dog_breed": "Siberian Husky",
-      "registry_file": "models/llama-3.json",
-      "tier": "open",
-      "open_weight": true
+    {
+      "name": "llama-3",
+      "lineage": "Meta",
+      "classification": "Mustang",
+      "path": "registry/models/llama-3.json"
     },
-    "glm": {
-      "dog_breed": "Jack Russell Terrier",
-      "registry_file": "models/glm.json",
-      "tier": "efficient",
-      "open_weight": true
+    {
+      "name": "glm",
+      "lineage": "Zhipu AI",
+      "classification": "Arabian",
+      "path": "registry/models/glm.json"
     },
-    "mistral": {
-      "dog_breed": "Greyhound",
-      "registry_file": "models/mistral.json",
-      "tier": "efficient",
-      "open_weight": true
+    {
+      "name": "mistral",
+      "lineage": "Mistral AI",
+      "classification": "Andalusian",
+      "path": "registry/models/mistral.json"
     },
-    "gemini": {
-      "dog_breed": "Golden Retriever",
-      "registry_file": "models/gemini.json",
-      "tier": "premium",
-      "open_weight": false
+    {
+      "name": "gemini",
+      "lineage": "Google",
+      "classification": "Hanoverian",
+      "path": "registry/models/gemini.json"
     },
-    "qwen": {
-      "dog_breed": "Australian Shepherd",
-      "registry_file": "models/qwen.json",
-      "tier": "open",
-      "open_weight": true
+    {
+      "name": "qwen",
+      "lineage": "Alibaba",
+      "classification": "Shire",
+      "path": "registry/models/qwen.json"
     }
-  }
+  ]
 }
