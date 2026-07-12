@@ -1,44 +1,38 @@
 {
-  "model": "gpt-4",
-  "dog_breed": "Border Collie",
-  "tagline": "The elite working dog — brilliant, intense, high-maintenance",
+  "name": "gpt-4",
+  "lineage": "OpenAI",
+  "classification": "Thoroughbred",
   "temperament": {
-    "intelligence": 10,
-    "trainability": 9,
-    "creativity": 8,
-    "caution": 7,
-    "energy": 9,
-    "independence": 4
+    "primary": "analytical",
+    "secondary": "cautious",
+    "description": "Calm, precise, excels under structured conditions. Premium reasoning with careful deliberation."
   },
   "working_aptitude": {
-    "code_generation": 9.5,
-    "reasoning": 9.5,
-    "creative_writing": 8.0,
-    "summarization": 8.5,
-    "math": 9.0,
-    "multilingual": 7.0,
-    "instruction_following": 9.0,
-    "long_context": 7.5
+    "code_generation": 9,
+    "reasoning": 9,
+    "summarization": 8,
+    "creative_writing": 8,
+    "multilingual": 7,
+    "multimodal": 8,
+    "long_context": 7,
+    "instruction_following": 9,
+    "tool_use": 9,
+    "mathematics": 9
   },
-  "cost": {
-    "input_per_1k_tokens": 0.03,
-    "output_per_1k_tokens": 0.06,
-    "tier": "expensive"
-  },
-  "speed": {
-    "latency_tier": "moderate",
-    "tokens_per_second": "moderate"
-  },
+  "cost_profile": "premium",
+  "speed_profile": "moderate",
   "recommended_for": [
     "complex reasoning",
-    "multi-step coding",
-    "legal/medical analysis",
-    "creative problem-solving"
+    "production code generation",
+    "multi-step planning",
+    "mathematical problem solving",
+    "structured analysis"
   ],
   "fence_compatibility": {
-    "guardrails": "strong",
-    "on_task_rate": 0.92,
-    "refusal_sensitive": true,
-    "notes": "Stays in the yard but may over-refuse edge cases"
-  }
+    "json_mode": true,
+    "function_calling": true,
+    "structured_output": true,
+    "system_prompt": true
+  },
+  "notes": "Top-tier breed for demanding cognitive tasks. High upkeep cost but unmatched precision."
 }
