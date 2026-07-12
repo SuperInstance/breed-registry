@@ -1,0 +1,44 @@
+{
+  "model": "gpt-4",
+  "dog_breed": "Border Collie",
+  "tagline": "The elite working dog — brilliant, intense, high-maintenance",
+  "temperament": {
+    "intelligence": 10,
+    "trainability": 9,
+    "creativity": 8,
+    "caution": 7,
+    "energy": 9,
+    "independence": 4
+  },
+  "working_aptitude": {
+    "code_generation": 9.5,
+    "reasoning": 9.5,
+    "creative_writing": 8.0,
+    "summarization": 8.5,
+    "math": 9.0,
+    "multilingual": 7.0,
+    "instruction_following": 9.0,
+    "long_context": 7.5
+  },
+  "cost": {
+    "input_per_1k_tokens": 0.03,
+    "output_per_1k_tokens": 0.06,
+    "tier": "expensive"
+  },
+  "speed": {
+    "latency_tier": "moderate",
+    "tokens_per_second": "moderate"
+  },
+  "recommended_for": [
+    "complex reasoning",
+    "multi-step coding",
+    "legal/medical analysis",
+    "creative problem-solving"
+  ],
+  "fence_compatibility": {
+    "guardrails": "strong",
+    "on_task_rate": 0.92,
+    "refusal_sensitive": true,
+    "notes": "Stays in the yard but may over-refuse edge cases"
+  }
+}
