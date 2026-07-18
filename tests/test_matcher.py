@@ -11,7 +11,11 @@ from breed_registry import (
     list_breeds,
     get_breed,
 )
-from breed_registry.models import AptitudeScore, ComparisonReport, ModelAssessment
+from breed_registry.models import (
+    AptitudeScore,
+    ComparisonReport,
+    ModelAssessment,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -210,3 +214,59 @@ class TestModelAssessment:
         rebuilt = ModelAssessment.from_dict(data)
         assert rebuilt.name == original.name
         assert rebuilt.overall_score() == original.overall_score()
+
+
+# ---------------------------------------------------------------------------
+# Regression tests for v1.0.1 validation fixes
+# ---------------------------------------------------------------------------
+
+class TestValidationRegression:
+    """Regression tests for validation fixes introduced in v1.0.1."""
+
+    def test_aptitude_score_rejects_negative(self):
+        """AptitudeScore should reject negative scores."""
+        with pytest.raises(ValueError, match="Score must be between 0 and 10"):
+            AptitudeScore(model="test", task="test", score=-1, rating="poor")
+
+    def test_aptitude_score_rejects_above_10(self):
+        """AptitudeScore should reject scores above 10."""
+        with pytest.raises(ValueError, match="Score must be between 0 and 10"):
+            AptitudeScore(model="test", task="test", score=11, rating="excellent")
+
+    def test_aptitude_score_rejects_non_int(self):
+        """AptitudeScore should reject non-integer scores."""
+        with pytest.raises(TypeError, match="Score must be an integer"):
+            AptitudeScore(model="test", task="test", score=9.5, rating="excellent")
+
+    def test_model_assessment_rejects_invalid_aptitude(self):
+        """ModelAssessment.from_dict should reject out-of-range aptitude scores."""
+        data = {
+            "name": "test-model",
+            "lineage": "test",
+            "breed_group": "Test",
+            "temperament": ["calm"],
+            "working_aptitude": {"code_generation": 15},  # Invalid: > 10
+            "cost_profile": "low",
+            "speed_profile": "fast",
+            "trainability": "high",
+            "recommended_for": ["testing"],
+            "not_recommended_for": [],
+            "fence_compatibility": "full",
+        }
+        with pytest.raises(ValueError, match="must be between 0 and 10"):
+            ModelAssessment.from_dict(data)
+
+    def test_select_breed_rejects_invalid_max_cost(self):
+        """select_breed should reject invalid max_cost values."""
+        with pytest.raises(ValueError, match="max_cost must be one of"):
+            select_breed("code_generation", max_cost="expensive")
+
+    def test_select_breed_rejects_non_positive_top_k(self):
+        """select_breed should reject non-positive top_k values."""
+        with pytest.raises(ValueError, match="top_k must be positive"):
+            select_breed("code_generation", top_k=0)
+
+    def test_select_breed_rejects_non_int_top_k(self):
+        """select_breed should reject non-integer top_k values."""
+        with pytest.raises(TypeError, match="top_k must be an integer"):
+            select_breed("code_generation", top_k=2.5)

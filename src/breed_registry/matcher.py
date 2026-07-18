@@ -8,6 +8,7 @@ based on their working aptitude scores.
 from __future__ import annotations
 
 import json
+import warnings
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -42,6 +43,8 @@ def _load_registry(registry_dir: Optional[Path] = None) -> Dict[str, ModelAssess
             with open(breed_file) as f:
                 data = json.load(f)
             assessments[key] = ModelAssessment.from_dict(data)
+        else:
+            warnings.warn(f"Breed file not found for '{key}': {breed_file}", stacklevel=2)
 
     return assessments
 
@@ -110,9 +113,30 @@ def select_breed(
 
     Returns:
         List of ModelAssessment objects, best match first.
+
+    Raises:
+        TypeError: If task is not a string, top_k is not an int, or max_cost is not a string/None.
+        ValueError: If top_k is not positive, or max_cost is not a valid cost level.
     """
+    # Input validation
+    if not isinstance(task, str):
+        raise TypeError(f"task must be a string, got {type(task).__name__}")
+    if not isinstance(top_k, int):
+        raise TypeError(f"top_k must be an integer, got {type(top_k).__name__}")
+    if top_k < 1:
+        raise ValueError(f"top_k must be positive, got {top_k}")
+    if max_cost is not None and not isinstance(max_cost, str):
+        raise TypeError(f"max_cost must be a string or None, got {type(max_cost).__name__}")
+
     registry = _get_registry()
     cost_order = {"free": 0, "low": 1, "moderate": 2, "high": 3}
+
+    # Validate max_cost if provided
+    if max_cost is not None and max_cost not in cost_order:
+        raise ValueError(
+            f"max_cost must be one of: {', '.join(cost_order.keys())}, got {max_cost!r}"
+        )
+
     cost_ceiling = cost_order.get(max_cost, 3) if max_cost else 3
 
     scored: List[Tuple[int, ModelAssessment]] = []

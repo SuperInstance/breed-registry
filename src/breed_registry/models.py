@@ -18,6 +18,13 @@ class AptitudeScore:
     rating: str  # human-readable rating
     percentile: Optional[float] = None  # percentile among all assessed models
 
+    def __post_init__(self) -> None:
+        """Validate the score is within the valid range."""
+        if not isinstance(self.score, int):
+            raise TypeError(f"Score must be an integer, got {type(self.score).__name__}")
+        if not 0 <= self.score <= 10:
+            raise ValueError(f"Score must be between 0 and 10, got {self.score}")
+
     def __repr__(self) -> str:
         return f"AptitudeScore(model={self.model!r}, task={self.task!r}, score={self.score}/10, rating={self.rating!r})"
 
@@ -69,12 +76,23 @@ class ModelAssessment:
 
     @classmethod
     def from_dict(cls, data: dict) -> "ModelAssessment":
+        working_aptitude = data["working_aptitude"]
+        # Validate all aptitude scores are in the 0-10 range
+        for task, score in working_aptitude.items():
+            if not isinstance(score, int):
+                raise TypeError(
+                    f"Aptitude score for '{task}' must be an integer, got {type(score).__name__}"
+                )
+            if not 0 <= score <= 10:
+                raise ValueError(
+                    f"Aptitude score for '{task}' must be between 0 and 10, got {score}"
+                )
         return cls(
             name=data["name"],
             lineage=data["lineage"],
             breed_group=data["breed_group"],
             temperament=data["temperament"],
-            working_aptitude=data["working_aptitude"],
+            working_aptitude=working_aptitude,
             cost_profile=data["cost_profile"],
             speed_profile=data["speed_profile"],
             trainability=data["trainability"],
