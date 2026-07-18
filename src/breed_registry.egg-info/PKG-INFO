@@ -1,0 +1,120 @@
+Metadata-Version: 2.4
+Name: breed-registry
+Version: 1.0.0
+Summary: The Breed Registry — model selection as breeding selection, from Working Animal Architecture
+Author: SuperInstance
+License: MIT
+Project-URL: Homepage, https://github.com/SuperInstance/breed-registry
+Project-URL: Repository, https://github.com/SuperInstance/breed-registry
+Keywords: llm,model-selection,ai,working-animal-architecture
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# 🐕 The Breed Registry
+
+> **Model selection as breeding selection.** In the working dog paradigm, choosing the right breed is the most important decision you'll make. This registry provides structured guidance on which base model to use for which task.
+
+## Why a Breed Registry?
+
+A working dog isn't a pet — it's bred for a purpose. Border collies herd. Labs retrieve. German shepherds protect. Each breed has instincts, temperaments, and physical traits honed over generations of selective breeding.
+
+Foundation models are the same. GPT-4 is a generalist — like a German shepherd that can do everything. Llama-3 is an open-lineage working dog you can train yourself. Mistral is a lean, efficient breed from European lines.
+
+**Choosing the wrong breed for the job wastes resources and produces poor results.** This registry exists to prevent that.
+
+---
+
+## What's Inside
+
+### `registry/` — Breed Assessments
+
+Each model is assessed like a dog breed at a confirmation show, but for **working aptitude** instead of conformation:
+
+| Field | Dog Analogy | Model Meaning |
+|---|---|---|
+| `lineage` | Pedigree / bloodline | Model family and training lineage |
+| `breed_group` | AKC group (Herding, Sporting, etc.) | Task category (General Purpose, Working, etc.) |
+| `temperament` | Breed temperament traits | Behavioral characteristics (careful, verbose, etc.) |
+| `working_aptitude` | Instinct tests & working trials | Task-specific capability scores (0-10) |
+| `cost_profile` | Feed & maintenance cost | API cost per token |
+| `speed_profile` | Speed/agility rating | Inference latency |
+| `trainability` | How well it takes to training | Fine-tune response quality |
+| `recommended_for` | Best-suited jobs | Tasks where this model excels |
+| `not_recommended_for` | Jobs it's wrong for | Tasks where this model struggles |
+| `fence_compatibility` | How well it respects boundaries | Conservation bytecode compliance |
+
+### `src/breed_registry/` — Python API
+
+```python
+from breed_registry import select_breed, compare_breeds, assess_aptitude
+
+# Find the best breed for a task
+recommendations = select_breed("code_generation")
+
+# Compare two breeds head-to-head
+report = compare_breeds("gpt-4", "llama-3")
+
+# Check a specific model's aptitude for a task
+score = assess_aptitude("mistral", "analysis")
+```
+
+---
+
+## Registered Breeds
+
+| Breed | Group | Cost | Speed | Best For |
+|---|---|---|---|---|
+| [GPT-4](registry/gpt-4.json) | General Purpose | High | Moderate | Complex reasoning, code generation |
+| [Claude-3](registry/claude-3.json | General Purpose | High | Moderate | Analysis, careful reasoning |
+| [Llama-3](registry/llama-3.json) | Open Lineage | Free | Fast | Local deployment, fine-tuning |
+| [GLM](registry/glm.json) | General Purpose | Low | Fast | Multilingual, efficient inference |
+| [Mistral](registry/mistral.json) | Working | Low | Fast | Efficient European-lineage tasks |
+
+---
+
+## Selection Philosophy
+
+### 1. Match the Breed to the Job
+Don't use a high-cost generalist for simple classification. Don't use a lightweight model for complex multi-step reasoning. Match instincts to tasks.
+
+### 2. Consider the Lineage
+Model families carry traits across generations. Fine-tunes inherit strengths and weaknesses. Know the pedigree before you commit.
+
+### 3. Respect the Fence
+Conservation compliance — how well a model respects guardrails and bytecode fences — is non-negotiable for production work. A model that won't respect boundaries is a liability.
+
+### 4. Trainability Matters
+Some breeds take to fine-tuning naturally. Others resist. If you need to specialize, choose a breed known for trainability.
+
+---
+
+## Adding a Breed
+
+To register a new model:
+
+1. Create `registry/<model-name>.json` following the assessment schema
+2. Add an entry to `registry/index.json`
+3. Submit a pull request
+
+Assess honestly. Overrating a model's working aptitude helps no one — least of all the teams who deploy it.
+
+---
+
+## License
+
+MIT
+
+---
+
+*Part of the [Working Animal Architecture](https://github.com/SuperInstance) — foundation models as working animals, not pets.*

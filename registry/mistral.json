@@ -1,0 +1,31 @@
+{
+  "name": "mistral",
+  "lineage": "Mistral family (Mistral AI) — European lineage, known for efficiency and open-weights models",
+  "breed_group": "Working",
+  "temperament": ["efficient", "lean", "European-trained", "practical"],
+  "working_aptitude": {
+    "code_generation": 7,
+    "analysis": 7,
+    "creative_writing": 7,
+    "math": 7,
+    "following_instructions": 7,
+    "conservation_compliance": 7
+  },
+  "cost_profile": "low",
+  "speed_profile": "fast",
+  "trainability": "good (especially with LoRA and similar methods)",
+  "recommended_for": [
+    "efficient inference",
+    "European language tasks",
+    "cost-sensitive deployments",
+    "edge and local deployment (smaller variants)",
+    "balanced code and text tasks"
+  ],
+  "not_recommended_for": [
+    "maximum reasoning depth",
+    "tasks needing very long context (depending on variant)",
+    "applications requiring deep specialization without fine-tuning"
+  ],
+  "fence_compatibility": "good — respects conservation bytecode reliably",
+  "notes": "The lean European working dog. Bred for efficiency over flash. Like a well-trained Malinois — gets the job done with minimal fuss."
+}

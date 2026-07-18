@@ -1,0 +1,32 @@
+{
+  "name": "gpt-4",
+  "lineage": "GPT family (OpenAI) — descended from GPT-3, itself from the GPT bloodline",
+  "breed_group": "General Purpose",
+  "temperament": ["careful", "verbose", "thorough", "expensive"],
+  "working_aptitude": {
+    "code_generation": 9,
+    "analysis": 9,
+    "creative_writing": 8,
+    "math": 7,
+    "following_instructions": 9,
+    "conservation_compliance": 8
+  },
+  "cost_profile": "high",
+  "speed_profile": "moderate",
+  "trainability": "high (good fine-tune response)",
+  "recommended_for": [
+    "complex reasoning",
+    "code generation",
+    "multi-step planning",
+    "detailed analysis",
+    "instruction-heavy tasks"
+  ],
+  "not_recommended_for": [
+    "high-frequency calls",
+    "simple classification",
+    "cost-sensitive operations",
+    "real-time applications"
+  ],
+  "fence_compatibility": "excellent — follows conservation bytecode well",
+  "notes": "The German Shepherd of models. Versatile, capable, expensive to feed. Best all-rounder when budget allows."
+}

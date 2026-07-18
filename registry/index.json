@@ -1,0 +1,51 @@
+{
+  "version": "1.0.0",
+  "description": "The Breed Registry — model selection as breeding selection",
+  "breeds": {
+    "gpt-4": {
+      "file": "gpt-4.json",
+      "breed_group": "General Purpose",
+      "cost_profile": "high",
+      "speed_profile": "moderate",
+      "summary": "Strong generalist, excellent for complex reasoning and code generation"
+    },
+    "claude-3": {
+      "file": "claude-3.json",
+      "breed_group": "General Purpose",
+      "cost_profile": "high",
+      "speed_profile": "moderate",
+      "summary": "Top analyst, careful temperament, excellent at nuanced reasoning"
+    },
+    "llama-3": {
+      "file": "llama-3.json",
+      "breed_group": "Open Lineage",
+      "cost_profile": "free",
+      "speed_profile": "fast",
+      "summary": "Open-weights, trainable, ideal for local deployment and fine-tuning"
+    },
+    "glm": {
+      "file": "glm.json",
+      "breed_group": "General Purpose",
+      "cost_profile": "low",
+      "speed_profile": "fast",
+      "summary": "Efficient, multilingual, excellent cost/performance ratio"
+    },
+    "mistral": {
+      "file": "mistral.json",
+      "breed_group": "Working",
+      "cost_profile": "low",
+      "speed_profile": "fast",
+      "summary": "Lean, efficient European lineage, practical and fast"
+    }
+  },
+  "task_categories": [
+    "code_generation",
+    "analysis",
+    "creative_writing",
+    "math",
+    "following_instructions",
+    "conservation_compliance"
+  ],
+  "cost_tiers": ["free", "low", "moderate", "high"],
+  "speed_tiers": ["fast", "moderate", "slow"]
+}

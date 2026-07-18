@@ -1,0 +1,32 @@
+{
+  "name": "llama-3",
+  "lineage": "LLaMA family (Meta) — open-weights lineage, descendant of LLaMA and LLaMA-2",
+  "breed_group": "Open Lineage",
+  "temperament": ["adaptable", "community-oriented", "trainable", "variable"],
+  "working_aptitude": {
+    "code_generation": 7,
+    "analysis": 7,
+    "creative_writing": 7,
+    "math": 6,
+    "following_instructions": 7,
+    "conservation_compliance": 6
+  },
+  "cost_profile": "free (open weights)",
+  "speed_profile": "fast (especially smaller variants)",
+  "trainability": "excellent — one of the most fine-tuned breeds in existence",
+  "recommended_for": [
+    "local deployment",
+    "fine-tuning",
+    "custom applications",
+    "cost-sensitive operations",
+    "research and experimentation",
+    "high-frequency calls"
+  ],
+  "not_recommended_for": [
+    "tasks requiring maximum reasoning depth",
+    "safety-critical applications without additional guardrails",
+    "plug-and-play deployment (needs setup)"
+  ],
+  "fence_compatibility": "moderate — varies by fine-tune; base model needs training to respect conservation bytecode",
+  "notes": "The working dog you own outright. No licensing fees, no API dependencies. Like a farm dog — you're responsible for its training, but it's yours."
+}

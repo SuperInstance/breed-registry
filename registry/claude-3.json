@@ -1,0 +1,31 @@
+{
+  "name": "claude-3",
+  "lineage": "Claude family (Anthropic) — trained with Constitutional AI methodology",
+  "breed_group": "General Purpose",
+  "temperament": ["careful", "analytical", "nuanced", "safety-conscious"],
+  "working_aptitude": {
+    "code_generation": 8,
+    "analysis": 10,
+    "creative_writing": 9,
+    "math": 7,
+    "following_instructions": 9,
+    "conservation_compliance": 10
+  },
+  "cost_profile": "high",
+  "speed_profile": "moderate",
+  "trainability": "high (responds well to RLHF and constitutional methods)",
+  "recommended_for": [
+    "deep analysis",
+    "careful reasoning",
+    "long-context comprehension",
+    "safety-critical tasks",
+    "nuanced writing"
+  ],
+  "not_recommended_for": [
+    "high-frequency calls",
+    "cost-sensitive operations",
+    "raw speed applications"
+  ],
+  "fence_compatibility": "excellent — bred for compliance, respects boundaries instinctively",
+  "notes": "The Border Collie of models. Intelligent, careful, attentive. Excels at analysis and tasks where precision matters more than speed."
+}

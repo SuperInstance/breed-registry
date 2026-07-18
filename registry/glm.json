@@ -1,0 +1,31 @@
+{
+  "name": "glm",
+  "lineage": "GLM family (Zhipu AI / THUDM) — General Language Model lineage, Chinese-origin with strong multilingual training",
+  "breed_group": "General Purpose",
+  "temperament": ["efficient", "multilingual", "balanced", "pragmatic"],
+  "working_aptitude": {
+    "code_generation": 7,
+    "analysis": 8,
+    "creative_writing": 7,
+    "math": 7,
+    "following_instructions": 8,
+    "conservation_compliance": 7
+  },
+  "cost_profile": "low",
+  "speed_profile": "fast",
+  "trainability": "good (responds well to instruction tuning)",
+  "recommended_for": [
+    "multilingual tasks",
+    "cost-efficient operations",
+    "Chinese-language applications",
+    "balanced workloads",
+    "production deployments needing good cost/performance ratio"
+  ],
+  "not_recommended_for": [
+    "maximum-depth reasoning tasks",
+    "tasks requiring English-native nuance",
+    "bleeding-edge capability requirements"
+  ],
+  "fence_compatibility": "good — respects conservation bytecode with minor exceptions on culturally specific content",
+  "notes": "The versatile working breed from Eastern lines. Efficient, multilingual, cost-effective. Like a well-rounded farm dog that doesn't eat much but works hard."
+}
