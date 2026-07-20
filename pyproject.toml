@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "breed-registry"
-version = "1.0.1"
+version = "1.0.2"
 description = "The Breed Registry — model selection as breeding selection, from Working Animal Architecture"
 readme = "README.md"
 license = {text = "MIT"}

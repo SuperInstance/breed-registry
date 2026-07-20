@@ -241,7 +241,11 @@ def assess_aptitude(model: str, task: str) -> AptitudeScore:
 
     # Calculate percentile
     registry = _get_registry()
-    all_scores = [a.aptitude_for(task) for a in registry.values() if a.aptitude_for(task) > 0]
+    all_scores = []
+    for a in registry.values():
+        score = a.aptitude_for(task)
+        if score > 0:
+            all_scores.append(score)
     if all_scores:
         below = sum(1 for s in all_scores if s < score)
         percentile = round((below / len(all_scores)) * 100, 1)
