@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: breed-registry
-Version: 1.0.1
+Version: 1.0.3
 Summary: The Breed Registry — model selection as breeding selection, from Working Animal Architecture
 Author: SuperInstance
 License: MIT
@@ -25,6 +25,12 @@ Dynamic: license-file
 
 > **Model selection as breeding selection.** In the working dog paradigm, choosing the right breed is the most important decision you'll make. This registry provides structured guidance on which base model to use for which task.
 
+[![Version](https://img.shields.io/badge/version-1.0.3-blue.svg)](CHANGELOG.md)
+[![Python](https://img.shields.io/badge/python-≥3.9-blue.svg)](pyproject.toml)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+---
+
 ## Why a Breed Registry?
 
 A working dog isn't a pet — it's bred for a purpose. Border collies herd. Labs retrieve. German shepherds protect. Each breed has instincts, temperaments, and physical traits honed over generations of selective breeding.
@@ -32,6 +38,32 @@ A working dog isn't a pet — it's bred for a purpose. Border collies herd. Labs
 Foundation models are the same. GPT-4 is a generalist — like a German shepherd that can do everything. Llama-3 is an open-lineage working dog you can train yourself. Mistral is a lean, efficient breed from European lines.
 
 **Choosing the wrong breed for the job wastes resources and produces poor results.** This registry exists to prevent that.
+
+It is the **selection layer** of Working Animal Architecture — it tells your orchestrator which model to send which prompt to, without invoking any model itself.
+
+---
+
+## Quick Start
+
+```python
+from breed_registry import select_breed, compare_breeds, assess_aptitude
+
+# Find the best breed for a task — returns ModelAssessment list, ranked
+recs = select_breed("code_generation", top_k=3)
+for r in recs:
+    print(f"{r.name}: {r.aptitude_for('code_generation')}/10 ({r.cost_profile})")
+
+# Compare two breeds head-to-head
+report = compare_breeds("gpt-4", "claude-3")
+print(report.summary())
+
+# Check one model × one task
+score = assess_aptitude("claude-3", "analysis")
+print(f"claude-3 / analysis: {score.score}/10 ({score.rating}) — "
+      f"percentile {score.percentile}%")
+```
+
+Five breeds ship by default: `gpt-4`, `claude-3`, `llama-3`, `glm`, `mistral`. List them with `list_breeds()`; fetch one with `get_breed(name)`.
 
 ---
 
@@ -44,42 +76,41 @@ Each model is assessed like a dog breed at a confirmation show, but for **workin
 | Field | Dog Analogy | Model Meaning |
 |---|---|---|
 | `lineage` | Pedigree / bloodline | Model family and training lineage |
-| `breed_group` | AKC group (Herding, Sporting, etc.) | Task category (General Purpose, Working, etc.) |
+| `breed_group` | AKC group (Herding, Sporting, etc.) | Task category (General Purpose, Working, Open Lineage, ...) |
 | `temperament` | Breed temperament traits | Behavioral characteristics (careful, verbose, etc.) |
-| `working_aptitude` | Instinct tests & working trials | Task-specific capability scores (0-10) |
-| `cost_profile` | Feed & maintenance cost | API cost per token |
-| `speed_profile` | Speed/agility rating | Inference latency |
-| `trainability` | How well it takes to training | Fine-tune response quality |
+| `working_aptitude` | Instinct tests & working trials | Per-task scores, 0–10 — the heart of the registry |
+| `cost_profile` | Feed & maintenance cost | API cost tier: `free`, `low`, `moderate`, `high` |
+| `speed_profile` | Speed/agility rating | Latency tier: `fast`, `moderate`, `slow` |
+| `trainability` | How well it takes to training | Free-text qualitative rating |
 | `recommended_for` | Best-suited jobs | Tasks where this model excels |
 | `not_recommended_for` | Jobs it's wrong for | Tasks where this model struggles |
 | `fence_compatibility` | How well it respects boundaries | Conservation bytecode compliance |
 
+Full schema: [`docs/SCHEMA.md`](docs/SCHEMA.md).
+
 ### `src/breed_registry/` — Python API
 
-```python
-from breed_registry import select_breed, compare_breeds, assess_aptitude
+| Function | Purpose |
+|---|---|
+| `list_breeds()` | All registered breed keys, sorted |
+| `get_breed(name)` | Full `ModelAssessment` for one breed |
+| `select_breed(task, top_k=3, max_cost=None)` | Ranked recommendations for a task |
+| `compare_breeds(a, b)` | Head-to-head comparison report |
+| `assess_aptitude(model, task)` | Single score + rating + percentile |
 
-# Find the best breed for a task
-recommendations = select_breed("code_generation")
-
-# Compare two breeds head-to-head
-report = compare_breeds("gpt-4", "llama-3")
-
-# Check a specific model's aptitude for a task
-score = assess_aptitude("mistral", "analysis")
-```
+Full reference: [`docs/API.md`](docs/API.md).
 
 ---
 
 ## Registered Breeds
 
-| Breed | Group | Cost | Speed | Best For |
+| Breed | Group | Cost | Speed | Top For |
 |---|---|---|---|---|
-| [GPT-4](registry/gpt-4.json) | General Purpose | High | Moderate | Complex reasoning, code generation |
-| [Claude-3](registry/claude-3.json | General Purpose | High | Moderate | Analysis, careful reasoning |
-| [Llama-3](registry/llama-3.json) | Open Lineage | Free | Fast | Local deployment, fine-tuning |
-| [GLM](registry/glm.json) | General Purpose | Low | Fast | Multilingual, efficient inference |
-| [Mistral](registry/mistral.json) | Working | Low | Fast | Efficient European-lineage tasks |
+| [`gpt-4`](registry/gpt-4.json) | General Purpose | high | moderate | code_generation (9/10) |
+| [`claude-3`](registry/claude-3.json) | General Purpose | high | moderate | analysis (10/10) |
+| [`llama-3`](registry/llama-3.json) | Open Lineage | free | fast | local / fine-tuning |
+| [`glm`](registry/glm.json) | General Purpose | low | fast | multilingual, cost-efficient |
+| [`mistral`](registry/mistral.json) | Working | low | fast | efficient inference |
 
 ---
 
@@ -97,24 +128,56 @@ Conservation compliance — how well a model respects guardrails and bytecode fe
 ### 4. Trainability Matters
 Some breeds take to fine-tuning naturally. Others resist. If you need to specialize, choose a breed known for trainability.
 
+### 5. Honest Scores
+Working-aptitude scores are *hand-curated practitioner assessments*, not benchmark numbers. They reflect how the model behaves in deployment, not how it scores on MMLU.
+
+---
+
+## Documentation Map
+
+| Doc | Covers |
+|---|---|
+| [`README.md`](README.md) | This file — quick-start and philosophy |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | How the registry is wired; how breeds are loaded, ranked, compared |
+| [`docs/API.md`](docs/API.md) | Full reference for every public symbol |
+| [`docs/EXAMPLES.md`](docs/EXAMPLES.md) | Worked usage examples (registration, querying, comparison) |
+| [`docs/SCHEMA.md`](docs/SCHEMA.md) | Field-by-field JSON schema and dataclass reference |
+| [`DOCS.md`](DOCS.md) | Companion guide with broader ecosystem context |
+| [`CHANGELOG.md`](CHANGELOG.md) | Release history |
+| [`AUDIT_v1.0.1.md`](AUDIT_v1.0.1.md) | Audit report for v1.0.1 |
+
 ---
 
 ## Adding a Breed
 
 To register a new model:
 
-1. Create `registry/<model-name>.json` following the assessment schema
-2. Add an entry to `registry/index.json`
-3. Submit a pull request
+1. Create `registry/<model-name>.json` following the assessment schema (see [`docs/SCHEMA.md`](docs/SCHEMA.md))
+2. Add an entry under `"breeds"` in `registry/index.json`
+3. The matcher picks it up on the next call — no Python changes required
 
 Assess honestly. Overrating a model's working aptitude helps no one — least of all the teams who deploy it.
 
 ---
 
-## License
+## Development
 
-MIT
+```bash
+# Install in editable mode
+pip install -e .
+
+# Run tests
+PYTHONPATH=src python3 -m pytest tests/ -v
+```
+
+The tests rely on the real `registry/` data, not mocks. They double as a schema conformance check.
 
 ---
 
-*Part of the [Working Animal Architecture](https://github.com/SuperInstance) — foundation models as working animals, not pets.*
+## License
+
+MIT — see [`LICENSE`](LICENSE).
+
+---
+
+*Part of the Working Animal Architecture — foundation models as working animals, not pets.*

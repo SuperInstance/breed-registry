@@ -237,13 +237,18 @@ def assess_aptitude(model: str, task: str) -> AptitudeScore:
         KeyError: if the model is not registered.
     """
     breed = get_breed(model)
-    score = breed.aptitude_for(task)
+    target_score = breed.aptitude_for(task)
 
-    # Calculate percentile
+    # Calculate percentile based on the requested breed's score, using
+    # an inner variable so we don't shadow ``target_score`` while iterating.
     registry = _get_registry()
-    all_scores = [a.aptitude_for(task) for a in registry.values() if a.aptitude_for(task) > 0]
+    all_scores = []
+    for assessment in registry.values():
+        candidate = assessment.aptitude_for(task)
+        if candidate > 0:
+            all_scores.append(candidate)
     if all_scores:
-        below = sum(1 for s in all_scores if s < score)
+        below = sum(1 for s in all_scores if s < target_score)
         percentile = round((below / len(all_scores)) * 100, 1)
     else:
         percentile = None
@@ -251,7 +256,7 @@ def assess_aptitude(model: str, task: str) -> AptitudeScore:
     return AptitudeScore(
         model=model,
         task=task,
-        score=score,
-        rating=_score_to_rating(score),
+        score=target_score,
+        rating=_score_to_rating(target_score),
         percentile=percentile,
     )

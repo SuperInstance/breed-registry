@@ -175,6 +175,35 @@ class TestAssessAptitude:
         with pytest.raises(KeyError):
             assess_aptitude("nonexistent", "code_generation")
 
+    def test_returns_requested_breed_score_not_iterated_score(self):
+        """Regression test: assess_aptitude must return the requested
+        breed's score, not whatever score the inner registry-iteration
+        loop happened to assign last. Prior to v1.0.3, the inner
+        ``score = a.aptitude_for(task)`` shadowed the outer variable
+        so the function effectively returned the last iterated model's
+        score for the task. This test pins both the requested score and
+        the percentile to the correct breed.
+        """
+        # gpt-4 has score 9 for code_generation (top of the registry).
+        score = assess_aptitude("gpt-4", "code_generation")
+        assert score.score == 9, (
+            f"assess_aptitude must return the requested breed's score; "
+            f"expected 9 for gpt-4/code_generation, got {score.score}"
+        )
+        assert score.rating == "excellent"
+
+        # claude-3 has score 10 for analysis (top of the registry).
+        score = assess_aptitude("claude-3", "analysis")
+        assert score.score == 10, (
+            f"assess_aptitude must return the requested breed's score; "
+            f"expected 10 for claude-3/analysis, got {score.score}"
+        )
+        assert score.rating == "excellent"
+
+        # llama-3 has score 7 for code_generation (mid-pack).
+        score = assess_aptitude("llama-3", "code_generation")
+        assert score.score == 7
+
 
 # ---------------------------------------------------------------------------
 # ModelAssessment unit tests

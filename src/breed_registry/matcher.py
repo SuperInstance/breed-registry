@@ -1,8 +1,23 @@
-"""
-Task-to-model matcher — the core selection engine.
+"""Task-to-model matcher — the core selection engine.
 
-Given a task (e.g. "code_generation"), recommends the best model breeds
+Given a task (e.g. ``"code_generation"``), recommends the best model breeds
 based on their working aptitude scores.
+
+Public surface:
+
+- :func:`list_breeds` — all registered breed keys
+- :func:`get_breed` — full assessment by key
+- :func:`select_breed` — ranked recommendations for a task
+- :func:`compare_breeds` — head-to-head comparison report
+- :func:`assess_aptitude` — single score with rating and percentile
+
+Internal surface (subject to change):
+
+- :data:`_REGISTRY_DIR` — path to the bundled ``registry/`` directory
+- :data:`_REGISTRY_CACHE` — module-level cache of loaded assessments
+- :func:`_load_registry` — load + validate assessments from disk
+- :func:`_get_registry` — cached accessor
+- :func:`_score_to_rating` — 0-10 → band string
 """
 
 from __future__ import annotations
@@ -80,15 +95,29 @@ def _score_to_rating(score: int) -> str:
 
 
 def list_breeds() -> List[str]:
-    """List all registered breed names."""
+    """List all registered breed keys, sorted alphabetically.
+
+    Cheap; reads from the cached registry. Returns an empty list only if
+    the registry directory is empty (which is itself a configuration
+    error).
+    """
     return sorted(_get_registry().keys())
 
 
 def get_breed(name: str) -> ModelAssessment:
     """Get the full assessment for a specific breed.
 
+    Args:
+        name: Breed key as registered in ``registry/index.json`` —
+            case-sensitive, hyphenated lowercase by convention
+            (e.g. ``"gpt-4"``, ``"llama-3"``).
+
+    Returns:
+        The full :class:`ModelAssessment` for the requested breed.
+
     Raises:
-        KeyError: if the breed is not registered.
+        KeyError: If the breed is not registered. The exception message
+            lists the available keys to make recovery easy.
     """
     registry = _get_registry()
     if name not in registry:
@@ -105,18 +134,47 @@ def select_breed(
 ) -> List[ModelAssessment]:
     """Recommend models for a given task, sorted by aptitude.
 
+    Ranks every registered breed by its working-aptitude score on
+    ``task`` and returns the top ``top_k``. Breeds whose
+    ``cost_profile`` exceeds ``max_cost`` are filtered *before* scoring.
+
+    Algorithm:
+
+    1. Resolve the registry (cached on first call).
+    2. Filter out breeds whose ``cost_profile`` exceeds ``max_cost``.
+    3. Score each remaining breed via ``assessment.aptitude_for(task)``.
+    4. Drop breeds with ``score == 0`` (unassessed, not worst).
+    5. Sort descending by score; stable.
+    6. Slice the first ``top_k`` entries.
+
     Args:
-        task: The task category (e.g. "code_generation", "analysis").
-        top_k: Maximum number of recommendations to return.
-        max_cost: Optional cost ceiling — "low" excludes moderate/high,
-                  "free" excludes everything but free models.
+        task: The task category (e.g. ``"code_generation"``,
+            ``"analysis"``, ``"creative_writing"``, ``"math"``,
+            ``"following_instructions"``, ``"conservation_compliance"``).
+            Unknown tasks return an empty list.
+        top_k: Maximum number of recommendations to return. Must be a
+            positive integer.
+        max_cost: Optional cost ceiling — one of ``"free"``, ``"low"``,
+            ``"moderate"``, ``"high"``. ``None`` means no ceiling.
+            ``"free"`` includes only free models; ``"low"`` includes
+            free and low; and so on.
 
     Returns:
-        List of ModelAssessment objects, best match first.
+        A list of :class:`ModelAssessment` objects, best match first.
+        Empty when no breed has a non-zero score on the task within the
+        cost ceiling.
 
     Raises:
-        TypeError: If task is not a string, top_k is not an int, or max_cost is not a string/None.
-        ValueError: If top_k is not positive, or max_cost is not a valid cost level.
+        TypeError: If ``task`` is not a ``str``, ``top_k`` is not an
+            ``int``, or ``max_cost`` is not a ``str`` or ``None``.
+        ValueError: If ``top_k < 1``, or ``max_cost`` is a string but
+            not one of the four allowed tiers.
+
+    Example::
+
+        >>> recs = select_breed("code_generation", top_k=3)
+        >>> [(r.name, r.aptitude_for("code_generation")) for r in recs]
+        [('gpt-4', 9), ('llama-3', 7), ('mistral', 7)]
     """
     # Input validation
     if not isinstance(task, str):
@@ -158,8 +216,29 @@ def select_breed(
 def compare_breeds(model_a: str, model_b: str) -> ComparisonReport:
     """Compare two breeds head-to-head across all working aptitude dimensions.
 
+    Builds a per-task matrix covering the *union* of both breeds'
+    assessed tasks, tallies advantages on each side, and decides an
+    overall winner by total score (not by task count).
+
+    Args:
+        model_a: First breed key.
+        model_b: Second breed key.
+
+    Returns:
+        A :class:`ComparisonReport` with the per-task matrix, the
+        winner (``"model_a"``, ``"model_b"``, or ``"tie"``), the margin,
+        the per-side advantage lists, and one-line cost/speed notes.
+
     Raises:
-        KeyError: if either model is not registered.
+        KeyError: If either model is not registered.
+
+    Example::
+
+        >>> report = compare_breeds("gpt-4", "claude-3")
+        >>> print(report.summary())
+        Comparison: gpt-4 vs claude-3
+        Overall winner: claude-3 (margin: 2 points)
+        ...
     """
     breed_a = get_breed(model_a)
     breed_b = get_breed(model_b)
@@ -233,21 +312,27 @@ def compare_breeds(model_a: str, model_b: str) -> ComparisonReport:
 def assess_aptitude(model: str, task: str) -> AptitudeScore:
     """Assess a specific model's aptitude for a specific task.
 
+    Computes the requested model's score on ``task`` (0-10) along with a
+    human-readable rating and the model's percentile rank among all
+    registered breeds that have a non-zero score on the same task.
+
     Raises:
         KeyError: if the model is not registered.
     """
     breed = get_breed(model)
-    score = breed.aptitude_for(task)
+    target_score = breed.aptitude_for(task)
 
-    # Calculate percentile
+    # Calculate percentile based on the requested breed's score, using
+    # an inner variable so we don't shadow ``target_score`` while iterating.
     registry = _get_registry()
-    all_scores = []
-    for a in registry.values():
-        score = a.aptitude_for(task)
-        if score > 0:
-            all_scores.append(score)
+    all_scores: List[int] = []
+    for assessment in registry.values():
+        candidate = assessment.aptitude_for(task)
+        if candidate > 0:
+            all_scores.append(candidate)
+
     if all_scores:
-        below = sum(1 for s in all_scores if s < score)
+        below = sum(1 for s in all_scores if s < target_score)
         percentile = round((below / len(all_scores)) * 100, 1)
     else:
         percentile = None
@@ -255,7 +340,7 @@ def assess_aptitude(model: str, task: str) -> AptitudeScore:
     return AptitudeScore(
         model=model,
         task=task,
-        score=score,
-        rating=_score_to_rating(score),
+        score=target_score,
+        rating=_score_to_rating(target_score),
         percentile=percentile,
     )
